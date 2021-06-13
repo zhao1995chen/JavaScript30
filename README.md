@@ -64,3 +64,33 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 - [Event.target](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/target)
 - [Event.currentTarget](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/currentTarget)
 - [e.currentTarget與e.target的區別](https://www.itread01.com/content/1545071047.html)
+
+### JS and CSS Clock
+
+按下按鍵發出聲音，畫面也會隨著點擊有 `:hover` 的觸發
+
+#### Note
+
+-  在 Alex 的示範中是用 `:after` 的方式去給設定 \
+   從一開始的走向就跟 Wes Bos 不一樣 \
+   要注意給樣式的對象是 `class` 本身還是 `:after` 跟 `:before`
+-  setInterval vs setTimeout
+   前者會隨著時間不斷觸發，後者只執行一次，如果要持續執行就會在 function 裡呼叫自己的地回去達到目的
+-  除錯點 1 \
+   針的自轉
+   -  在 Wes Bos 的示範中是加上了 `transform-origin: 100%;` \
+      因為預設是 `transform-origin: 50%;` 將基準設在中間才會自轉
+   -  在 Alex 的示範中是用整個區塊旋轉帶動針的旋轉 ( `rotate(deg)` 是加在 `.hand` 上不是 `:after` ) \
+      所以就沒有針的自轉的問題
+#### 補充
+
+-  `;(function() {})()` 前面的分號比較像為了避免前面的 function 結尾沒有加 `;` 可能會有問題所以才加的預防措施
+-  更新速度取決於螢幕刷新率，如果螢幕刷新率不夠設再低也沒用 \
+   60 HZ 最快約 17 ms 更新一次，144 HZ 最快約 7 ms 更新一次
+-  `requestAnimationFrame` 用法有點像 `setTimeout`，刷新速度取決於硬體能力 \
+   更新是靠畫面硬體更新，不需要再去給更新時間，canvas 多使用
+
+## 參考資料
+
+- [JS30](https://javascript30.com/)
+- [Alex 宅幹嘛 - 深入淺出 Javascript30 快速導覽](https://www.youtube.com/playlist?list=PLEfh-m_KG4dYbxVoYDyT_fmXZHnuKg2Fq)
