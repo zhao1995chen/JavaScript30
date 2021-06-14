@@ -3,7 +3,8 @@
 ![JS30 Banner](https://camo.githubusercontent.com/07ca65497065dd926bd889c53b7b7652f8ef3cbc4320739cf7ebed3c4d34cb2d/68747470733a2f2f6a61766173637269707433302e636f6d2f696d616765732f4a53332d736f6369616c2d73686172652e706e67)
 
 > 關於一些小練習 \
-> 練習來源：[JS30](https://javascript30.com/)
+> 練習來源：[JS30](https://javascript30.com/) \
+> 參考影片：[Alex 宅幹嘛 - 深入淺出 Javascript30 快速導覽](https://www.youtube.com/playlist?list=PLEfh-m_KG4dYbxVoYDyT_fmXZHnuKg2Fq)
 
 JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 天 30 個主題玩轉 JavaScript~~(還是被JavaScript玩)~~。
 
@@ -59,15 +60,13 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 
 ## 參考資料
 
-- [JS30](https://javascript30.com/)
-- [Alex 宅幹嘛 - 深入淺出 Javascript30 快速導覽](https://www.youtube.com/playlist?list=PLEfh-m_KG4dYbxVoYDyT_fmXZHnuKg2Fq)
 - [Event.target](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/target)
 - [Event.currentTarget](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/currentTarget)
 - [e.currentTarget與e.target的區別](https://www.itread01.com/content/1545071047.html)
 
 ### JS and CSS Clock
 
-按下按鍵發出聲音，畫面也會隨著點擊有 `:hover` 的觸發
+時鐘
 
 #### Note
 
@@ -90,7 +89,29 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 -  `requestAnimationFrame` 用法有點像 `setTimeout`，刷新速度取決於硬體能力 \
    更新是靠畫面硬體更新，不需要再去給更新時間，canvas 多使用
 
+### CSS Variables
+
+利用調整 CSS Variables 去調整 CSS 樣式
+
+#### Note
+
+-  如果要用 JS 去控制 CSS Sass是做不到的，根本性不同是 Sass 是編譯階段，而 CSS Variables 是執行階段
+-  CSS Variables 相容性上 IE 不支援
+-  `:root` 等同於 `html` (哪泥!?) \
+   `document.querySelector(':root') === document.querySelector('html')` > true \
+   `document.querySelector(':root') === document.documentElement` > true
+-  直接設定當需要被設定的地方一多就會長的很可怕，用變數統一管理，改一個就改全部
+-  `data-sizing` 將單位交由使用者決定，js 只做有無的邏輯判斷
+   `data-sizing` 要用 `this.dataset.sizing` 去取
+-  除錯點 1 \
+   如果單純只有對 `mousemove` 事件去做監聽會有問題，color 選色並沒有將鼠標移到物件的區域
+-  除錯點 2 \
+   `document.documentElement.style['--' + this.name]` 中括號裡的值不能用組的
+#### 補充
+
+-  箭頭函式 `() => {}` \
+   沒有自己的 `this` 會繼承外層的 `this`
+
 ## 參考資料
 
-- [JS30](https://javascript30.com/)
-- [Alex 宅幹嘛 - 深入淺出 Javascript30 快速導覽](https://www.youtube.com/playlist?list=PLEfh-m_KG4dYbxVoYDyT_fmXZHnuKg2Fq)
+- 
