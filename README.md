@@ -9,6 +9,7 @@
 JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 天 30 個主題玩轉 JavaScript~~(還是被JavaScript玩)~~。
 
 ## Let's Start
+
 ### JavaScript Drum Kit
 
 按下按鍵發出聲音，畫面也會隨著點擊有 `:hover` 的觸發
@@ -37,6 +38,7 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 -  除錯點 6 \
    不適合在這個例子裡用 `toggle` 去做樣式的新增移除 \
    因為他的觸發時間點是 `transitionend`，每次 transition 變動結束後都會觸發 `transitionend`，所以會不斷的觸發 ~~，然後你就擁有了一閃一閃亮晶晶的效果~~
+
 #### 補充
 
 -  **IIFE 立即函式** \
@@ -58,7 +60,7 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 -  target vs currentTarget
    target 抓到的是觸發事件的物件，currentTarget 抓的是繫結的物件
 
-## 參考資料
+#### 參考資料
 
 - [Event.target](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/target)
 - [Event.currentTarget](https://developer.mozilla.org/zh-TW/docs/Web/API/Event/currentTarget)
@@ -81,6 +83,7 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
       因為預設是 `transform-origin: 50%;` 將基準設在中間才會自轉
    -  在 Alex 的示範中是用整個區塊旋轉帶動針的旋轉 ( `rotate(deg)` 是加在 `.hand` 上不是 `:after` ) \
       所以就沒有針的自轉的問題
+
 #### 補充
 
 -  `;(function() {})()` 前面的分號比較像為了避免前面的 function 結尾沒有加 `;` 可能會有問題所以才加的預防措施
@@ -107,11 +110,60 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
    如果單純只有對 `mousemove` 事件去做監聽會有問題，color 選色並沒有將鼠標移到物件的區域
 -  除錯點 2 \
    `document.documentElement.style['--' + this.name]` 中括號裡的值不能用組的
+
 #### 補充
 
 -  箭頭函式 `() => {}` \
    沒有自己的 `this` 會繼承外層的 `this`
 
-## 參考資料
+### Array Cardio Day 1
 
-- 
+Array 的案例介紹
+
+#### Note
+
+-  `Array.prototype.filter(function callback(element[, index[, array]]){}[, thisArg])` \
+   在這裡的 callback function 是一個斷言，用於測試陣列中的每個元素。 \
+   回傳值為 true 時將當前的元素保留至新陣列中，若為 false 則不保留。 \
+   範例
+   ```javascript
+   let arr = ['B', 'A', 'E', 'C', 'A', 'F', 'G', 'E'];
+
+   let newArr = arr.filter(function (element, index, self) {
+   return self.indexOf(element) === index;
+   });
+
+   newArr; // ["B", "A", "E", "C", "F", "G"]
+   ```
+-  `Array.prototype.map(function callback(currentValue[, index[, array]]) {}[, thisArg])` \
+   將原陣列的元素經過運算後保留至新陣列中 \
+   如果不需要回傳薪陣列就不需要用 `map()`
+-  `Array.prototype.sort([compareFunction])` \
+   如果沒有寫 compare function 直接呼叫使用會利用 Unicode 進行排列
+   如果有寫 compare function，回傳值決定排列順序
+   -  < 0 順序不變
+   -  === 0 順序不變
+   -  \> 0 交換位置
+-  `Array.prototype.reduce(function callback(accumulator, currentValue[, currentIndex[, array]]) {}[, initialValue])`
+
+-  除錯點 1 \
+   
+-  除錯點 2 \
+
+#### 補充
+
+-  `Array.prototype.sort([compareFunction])` \
+   -  排列非 ASCII 字元，利用 `String.localeCompare()`
+      ```javascript
+      var items = ['réservé', 'premier', 'cliché', 'communiqué', 'café', 'adieu'];
+      items.sort(function (a, b) {
+      return a.localeCompare(b);
+      });
+      // items is ['adieu', 'café', 'cliché', 'communiqué', 'premier', 'réservé']
+      ```
+   -  `compareFunction(a, b)` 在給予一組特定元素 a 及 b 為此函數之兩引數時必須總是回傳相同的值。若回傳值不一致，排序順序則為 undefined。
+
+#### 參考資料
+
+-  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
+-  [JavaScript之一定要了解的 Array 與方法](https://ithelp.ithome.com.tw/articles/10229458)
