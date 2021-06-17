@@ -137,18 +137,30 @@ Array 的案例介紹
    ```
 -  `Array.prototype.map(function callback(currentValue[, index[, array]]) {}[, thisArg])` \
    將原陣列的元素經過運算後保留至新陣列中 \
-   如果不需要回傳薪陣列就不需要用 `map()`
+   如果不需要回傳新陣列就不需要用 `map()`
+-  map vs forEach \
+   foeEach 沒有回傳值，如果要生成新陣列要先 new 一個 array 再一個個 push
 -  `Array.prototype.sort([compareFunction])` \
    如果沒有寫 compare function 直接呼叫使用會利用 Unicode 進行排列
    如果有寫 compare function，回傳值決定排列順序
+
    -  < 0 順序不變
    -  === 0 順序不變
    -  \> 0 交換位置
--  `Array.prototype.reduce(function callback(accumulator, currentValue[, currentIndex[, array]]) {}[, initialValue])`
 
+   預設用字串比較，如果不是用減法去算會有問題
+-  `Array.prototype.reduce(function callback(accumulator, currentValue[, currentIndex[, array]]) {}[, initialValue])`
+   -  `accumulator` 用來累積回呼函式回傳值的累加器
+   -  `currentValue` 原陣列目前所迭代處理中的元素
+   -  `currentIndex` 原陣列目前所迭代處理中的元素之索引 \
+      若有傳入 initialValue，則由索引 0 之元素開始，若無則自索引 1 之元素開始。
+   -  `initialValue` 是第一次呼叫 callback function 時要傳入的累加器初始值。 \
+      若沒有提供初始值，則原陣列的第一個元素將會被當作初始的累加器。 \
+      假如於一個空陣列呼叫 `reduce()` 方法且沒有提供累加器初始值，將會發生錯誤。
 -  除錯點 1 \
-   
+   NodeList 不是陣列，Array-Like 沒有 `map()`，要用 `Array.from()` 轉
 -  除錯點 2 \
+   `reduce()` 的使用上要注意初始值賦值
 
 #### 補充
 
@@ -162,8 +174,196 @@ Array 的案例介紹
       // items is ['adieu', 'café', 'cliché', 'communiqué', 'premier', 'réservé']
       ```
    -  `compareFunction(a, b)` 在給予一組特定元素 a 及 b 為此函數之兩引數時必須總是回傳相同的值。若回傳值不一致，排序順序則為 undefined。
+-  `sort()` 在大部分瀏覽器都支援穩定排序，但 IE 會有不穩定排序的問題
+-  解構賦值
+   -  從陣列解構賦值(Array destructuring)
+      ```javascript
+      // 基本用法
+      const [a, b] = [1, 2] // a=1, b=2
+
+      // 先宣告後指定值，要用let才行
+      let a, b
+      [a, b] = [1, 2]
+
+      // 略過某些值
+      const [a, , b] = [1, 2, 3] // a=1, b=3
+
+      // 其餘運算
+      const [a, ...b] = [1, 2, 3] // a=1, b=[2,3]
+
+      // 失敗保護
+      const [, , , a, b] = [1, 2, 3] // a=undefined, b=undefined
+
+      // 交換值
+      const a = 1, b = 2;
+      [b, a] = [a, b] // a=2, b=1
+
+      // 多維複雜陣列
+      const [a, [b, [c, d]]] = [1, [2, [[[3, 4], 5], 6]]]
+
+      // 字串
+      const str = "hello";
+      const [a, b, c, d, e] = str
+      ```
+
+   -  從物件解構賦值(Object destructuring)
+      ```javascript
+      // 基本用法
+      const { user: x } = { user: 5 } // x=5
+
+      // 失敗保護(Fail-safe)
+      const { user: x } = { user2: 5 } // x=undefined
+
+      // 賦予新的變數名稱
+      const { prop: x, prop2: y } = { prop: 5, prop2: 10 } // x=5, y=10
+
+      // 屬性賦值語法
+      const { prop: prop, prop2: prop2 } = { prop: 5, prop2: 10 } // prop = 5, prop2=10
+
+      // 相當於上一行的簡短語法(Short-hand syntax)
+      const { prop, prop2 } = { prop: 5, prop2: 10 } // prop = 5, prop2=10
+
+      // ES7+的物件屬性其餘運算符
+      const {a, b, ...rest} = {a:1, b:2, c:3, d:4} // a=1, b=2, rest={c:3, d:4}
+      ```
+
+   -  ```javascript
+         let a, b
+         { a, b } = {a: 1, b: 2} // 錯誤寫法
+         ({ a, b } = {a: 1, b: 2}) // a=1, b=2
+      ```
+      雖然使用 `{}` 是物件的宣告符號，但當前方沒有 `let` `const` `var` 這些宣告字詞時，則是代表程式碼的區塊 \
+      在外面再加上括號符號 `()` 讓他變成表達式
+
+   -  ```javascript
+      // 混用物件與陣列
+      const {prop: x, prop2: [, y]} = {prop: 5, prop2: [10, 100]}
+
+      console.log(x, y) // => 5 100
+
+      // 複雜多層次的物件
+      const {
+      prop: x,
+      prop2: {
+         prop2: {
+            nested: [ , , b]
+         }
+      }
+      } = { prop: "Hello", prop2: { prop2: { nested: ["a", "b", "c"]}}}
+
+      console.log(x, b) // => Hello c
+      ```
+
+   -  從非陣列或非物件解構賦值 \
+      當一個值要被進行解構時，它會先被轉成物件(或陣列) \
+      因為 null 或 undefined 無法轉成物件(或陣列)，所以會產生錯誤 \
+      如果值轉換的物件(或陣列)，沒有附帶對應的迭代器(Iterator)就無法被成功解構賦值，最後回傳undefined
+      ```javascript
+      const [a] = undefined
+      const {b} = null
+      //TypeError: Invalid attempt to destructure non-iterable instance 
+      ```
+
+      ```javascript
+      const {a} = false
+      const {b} = 10
+      const {c} = 'hello'
+
+      console.log(a, b, c) // undefined undefined undefined
+      ```
+
+      ```javascript
+      const [a] = false // false is not iterable
+      const [b] = 10 // 10 is not iterable
+      const [c] = 'hello' // c = 'h'
+
+      console.log( a, b, c)
+      ```
+
+   -  在等號左邊可以給定預設值，作為如果沒有賦到值時(對應的值不存在)的預設數值
+      ```javascript
+      const [missing = true] = []
+      console.log(missing)
+      // true
+
+      const { message: msg = 'Something went wrong' } = {}
+      console.log(msg)
+      // Something went wrong
+
+      const { x = 3 } = {}
+      console.log(x)
+      // 3
+      ```
+
+      ```javascript
+      const { a ='hello' } = 'hello'
+      const [ b ='hello' ] = 'hello'
+
+      console.log( a, b) // hello h
+      ```
+   -  在函式傳入參數定義中使用 \
+      在函式傳入參數中作解構賦值時，給 null 會導致預設值不作用 \
+      當數字運算時，null 相當於 0
+      ```javascript
+      function func({a = 3, b = 5} = {a: 7, b: 11}) {
+      return a + b
+      }
+
+      func({a: 1, b: 2}) // 3
+      func({a: 1}) // 6
+      func({b: 2}) // 5
+      func({}) // 8 !!
+      func() // 18 !!
+      ```
+
+      ```javascript
+      function func({a = 1, b = 2} = {a: 1, b: 2}) {
+      return a + b
+      }
+
+      func({a: 3, b: 5}) // 8
+      func({a: 3}) // 5
+      func({b: 5}) // 6
+      func({a: null}) // 2 !!
+      func({b: null}) // 1 !!
+      func({a: void 0}) // 3 !!
+      func({b: void 0}) // 3 !!
+      func({}) // 3
+      func() // 3
+      ```
+   -  `for...of`
+      ```javascript
+      const people = [
+      {
+         name: 'Mike Smith',
+         family: {
+            mother: 'Jane Smith',
+            father: 'Harry Smith',
+            sister: 'Samantha Smith'
+         },
+         age: 35
+      },
+      {
+         name: 'Tom Jones',
+         family: {
+            mother: 'Norah Jones',
+            father: 'Richard Jones',
+            brother: 'Howard Jones'
+         },
+         age: 25
+      }
+      ];
+
+      for (let {name: n, family: { father: f } } of people) {
+      console.log('Name: ' + n + ', Father: ' + f)
+      }
+
+      // "Name: Mike Smith, Father: Harry Smith"
+      // "Name: Tom Jones, Father: Richard Jones"
+      ```
 
 #### 參考資料
 
 -  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
 -  [JavaScript之一定要了解的 Array 與方法](https://ithelp.ithome.com.tw/articles/10229458)
+-  [解構賦值](https://eyesofkids.gitbooks.io/javascript-start-from-es6/content/part4/destructuring.html)

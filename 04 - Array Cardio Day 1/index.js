@@ -62,75 +62,83 @@
 
   // Array.prototype.filter()
   // 1. Filter the list of inventors for those who were born in the 1500's
-  const filter = inventors.filter(function (inventor) {
-    if (1500 <= inventor.year && inventor.year < 1600) {
-      return true;
-    }
-  });
+  const filter = inventors.filter(
+    (inventor) => 1500 <= inventor.year && inventor.year < 1600 // 箭頭函式預設就會 return
+  );
 
   console.table(filter);
 
   // Array.prototype.map()
   // 2. Give us an array of the inventors first and last names
-  const map = inventors.map(function (inventor) {
-    return inventor.first + ' ' + inventor.last;
-  });
+  const map = inventors.map((inventor) => `${inventor.first} ${inventor.last}`);
 
   console.table(map);
 
+  const forEach = [];
+  inventors.forEach((inventor) => {
+    forEach.push(`${inventor.first} ${inventor.last}`);
+  });
+
+  console.table(forEach);
+
   // Array.prototype.sort()
   // 3. Sort the inventors by birthdate, oldest to youngest
-  const sort = inventors.sort(function (inventor, inventor2) {
-    if (inventor.year > inventor2.year) {
-      return 1;
-    }
-    return -1;
-  });
+  const sort = inventors.sort(
+    (inventor, inventor2) => inventor.year - inventor2.year
+  );
 
   console.table(sort);
   // Array.prototype.reduce()
   // 4. How many years did all the inventors live all together?
-  const reduce = inventors.reduce(function (accumulator, inventor) {
-    // console.log('accumulator', accumulator);
-    // console.log('inventor', inventor);
-    if (typeof accumulator === 'object') {
-      return (
-        accumulator.passed -
-        accumulator.year +
-        (inventor.passed - inventor.year)
-      );
-    } else {
-      return accumulator + (inventor.passed - inventor.year);
-    }
-  });
+  const reduce = inventors.reduce(
+    (total, inventor) => total + (inventor.passed - inventor.year),
+    0
+  );
+
+  // 1 => total = 0, inventor = {first: 'Albert', last: 'Einstein', year: 1879, passed: 1955}
+  // 2 => total = 76, inventor = {first: 'Isaac', last: 'Newton', year: 1643, passed: 1727}
+  // 3 => total = 76 + 84, inventor = {first: 'Galileo', last: 'Galilei', year: 1564, passed: 1642}
+  // ......
 
   console.log(reduce);
 
   // 5. Sort the inventors by years lived
-  const sort2 = inventors.sort(function (inventor, inventor2) {
-    inventor.lived = inventor.passed - inventor.year;
-    inventor2.lived = inventor2.passed - inventor2.year;
+  inventors.forEach(
+    (inventor) => (inventor.lived = inventor.passed - inventor.year)
+  );
 
-    if (inventor.lived > inventor2.lived) {
-      return 1;
-    }
-    return -1;
-  });
+  const sort2 = inventors.sort(
+    (inventor, inventor2) =>
+      inventor.passed - inventor.year - (inventor2.passed - inventor2.year)
+  );
 
   console.table(sort2);
 
   // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
   // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-  // wikiCrawler();
+  /*
+  let array = Array.from(
+    document.querySelectorAll('.mw-category-group ul li a')
+  ).filter((node) => node.innerHTML.indexOf('de') !== -1);
+  // let array = [
+  //   ...document.querySelectorAll('.mw-category-group ul li a'),
+  // ].filter((node) => node.innerHTML.indexOf('de') !== -1);
+  let result = [];
+  array.forEach((node) => result.push(node.innerHTML));
+  console.table(result);
+  */
+
   // 7. sort Exercise
   // Sort the people alphabetically by last name
-  const peopleSort = people.sort(function (previous, current) {
-    const previousLastName = previous.trim().split(',')[1];
-    const currentLastName = current.trim().split(',')[1];
-    if (previousLastName > currentLastName) {
-      return 1;
-    }
-    return -1;
+  const peopleSort = people.sort((previous, current) => {
+    const [previousFirstName, previousLastName] = previous.split(', ');
+    const [currentFirstName, currentLastName] = current.split(', ');
+
+    return previousLastName > currentLastName
+      ? 1
+      : previousLastName < currentLastName
+      ? -1
+      : 0;
   });
 
   console.table(peopleSort);
@@ -153,4 +161,13 @@
     'car',
     'truck',
   ];
+
+  const counter = data.reduce((obj, content) => {
+    if (!obj[content]) obj[content] = 1;
+    else obj[content] += 1;
+
+    return obj;
+  }, {});
+
+  console.table(counter);
 })();
