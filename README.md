@@ -367,3 +367,35 @@ Array 的案例介紹
 -  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
 -  [JavaScript之一定要了解的 Array 與方法](https://ithelp.ithome.com.tw/articles/10229458)
 -  [解構賦值](https://eyesofkids.gitbooks.io/javascript-start-from-es6/content/part4/destructuring.html)
+
+### Flex Panel Gallery
+
+#### Note
+
+-  在不同瀏覽器中的 flex-grow 的 propertyName 不同 \
+   Safari 是 flex，Chrome 跟 Firefox 是 flex-grow
+-  除錯點 1 \
+   EventListener 裡的 call back function  為什麼不用小括號 \
+   在這裡的並不是立即執行，而是傳 function 的參考，當事件觸發 function 才會執行
+-  除錯點 2 \
+   `transactionend` 只針對特定觀察屬性做觸發
+
+#### 補充
+
+-  Flex 內層屬性
+   -  flex \
+      flex 是縮寫，裡面**依序**包含三個屬性 flex-grow、flex-shrink 和 flex-basis \
+      如果只設定一個則是 flex-grow
+      -  flex-grow \
+         元件的伸展性，當空間分配還有剩餘時的當前元件的伸展性 \
+        預設值為 0，如果設置為 0 則不會縮放
+      -  flex-shrink \
+         元件的伸展性，當空間分配還不足時的當前元件的收縮性 \
+        預設值為 1，如果設置為 0 則不會縮放
+      -  flex-basis \
+         元件的基準值，可使用不同的單位值，優先度比 width 高，會依照 flex-basis 比例分配
+#### 參考資料
+
+-  [圖解：CSS Flex 屬性一點也不難 ](https://wcc723.github.io/css/2017/07/21/css-flex/)
+-  [前端之 " wow~原來是這樣啊 "系列](https://ithelp.ithome.com.tw/articles/10208741)
+-  [FLEXBOX FROGGY](https://flexboxfroggy.com/)
