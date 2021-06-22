@@ -1,9 +1,103 @@
+@font-face {
+  font-family: Montserrat;
+  src: url(./fonts/Montserrat-Regular.ttf);
+}
+
+:root {
+  color: #333;
+}
+
+body {
+  font-family: Montserrat;
+  background-color: ghostwhite;
+}
+
 img {
   max-width: 100%;
   height: auto;
 }
 
-.banner {
-  background: url(https://camo.githubusercontent.com/07ca65497065dd926bd889c53b7b7652f8ef3cbc4320739cf7ebed3c4d34cb2d/68747470733a2f2f6a61766173637269707433302e636f6d2f696d616765732f4a53332d736f6369616c2d73686172652e706e67)
-    no-repeat;
+.header {
+  height: 300px;
+  background-color: #333;
+}
+
+.title {
+  background-color: #f7df1e;
+}
+
+.description,
+.copyright {
+  color: ghostwhite;
+}
+
+.footer {
+  height: 50px;
+  background-color: #333;
+}
+
+.list-item .body {
+  transition: all 0.05s ease;
+  background-color: ghostwhite;
+  position: relative;
+  box-shadow: 0 0.5rem 1rem rgba(51, 51, 51, 0.15);
+  border-radius: 3px;
+}
+
+.list-item .body:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.list-item .img-top {
+  border-radius: 3px 3px 0 0;
+}
+
+.list-item .title {
+  background-color: rgba(0, 0, 0, 0);
+  color: #f7df1e;
+  font-weight: 900;
+  font-size: 24px;
+  position: absolute;
+  bottom: 25%;
+  left: 15px;
+}
+
+.list-item .title.dark {
+  color: #333;
+}
+
+.list-item .title-bg {
+  width: 70%;
+  height: 15px;
+  background-color: rgba(247, 223, 30, 0.4);
+  position: absolute;
+  bottom: 28%;
+  left: 10px;
+}
+
+.list-item .title-bg.dark {
+  background-color: rgba(51, 51, 51, 0.2);
+}
+
+.list-item .btn {
+  width: 120px;
+  background-color: #333;
+  border-color: #333;
+  color: ghostwhite;
+  border-radius: 0;
+}
+
+.list-item .btn:hover {
+  background-color: #222;
+  border-color: #111;
+}
+
+.list-item .btn:active {
+  background-color: #111;
+  border-color: #111;
+}
+
+.list-item .btn:focus {
+  box-shadow: 0 0 0 0.25rem rgb(51 51 51 / 50%);
 }
