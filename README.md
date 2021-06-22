@@ -6,7 +6,7 @@
 > 練習來源：[JS30](https://javascript30.com/) \
 > 參考影片：[Alex 宅幹嘛 - 深入淺出 Javascript30 快速導覽](https://www.youtube.com/playlist?list=PLEfh-m_KG4dYbxVoYDyT_fmXZHnuKg2Fq)
 
-JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 天 30 個主題玩轉 JavaScript~~(還是被JavaScript玩)~~。
+JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 天 30 個主題玩轉 JavaScript ~~(還是被JavaScript玩)~~。
 
 ## Let's Start
 
@@ -399,3 +399,22 @@ Array 的案例介紹
 -  [圖解：CSS Flex 屬性一點也不難 ](https://wcc723.github.io/css/2017/07/21/css-flex/)
 -  [前端之 " wow~原來是這樣啊 "系列](https://ithelp.ithome.com.tw/articles/10208741)
 -  [FLEXBOX FROGGY](https://flexboxfroggy.com/)
+
+### Ajax Type Ahead
+
+#### Note
+
+-  
+-  除錯點 1 \
+   同步非同步所造成的空陣列 filter \
+   用 `Promise.then()` `async` `await` 可以實現等待的需求
+-  除錯點 2 \
+   
+
+#### 補充
+
+-  
+#### 參考資料
+
+-  [我要學會 JS(三)：callback、Promise 和 async/await 那些事兒](https://noob.tw/js-async/)
+-  [簡單理解 JavaScript Async 和 Await](https://www.oxxostudio.tw/articles/201908/js-async-await.html)
