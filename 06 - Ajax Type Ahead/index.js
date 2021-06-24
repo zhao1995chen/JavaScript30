@@ -16,10 +16,10 @@
               city.state.toUpperCase().includes(this.value.toUpperCase()) ||
               city.city.toUpperCase().includes(this.value.toUpperCase())
           );
-        },
-        (err) => {
-          console.error(err);
         }
+        // (err) => {
+        //   return Promise.reject(err);
+        // }
       )
       .then(() => {
         console.log('city', city);
@@ -48,6 +48,10 @@
             list.append(node);
           });
         }
+      })
+      .catch((e) => {
+        console.error(e);
+        // return Promise.reject(e);
       });
   }
 

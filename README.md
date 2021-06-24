@@ -404,17 +404,44 @@ Array 的案例介紹
 
 #### Note
 
--  
+-  利用 `Intl.NumberFormat.format()` 對人口數做數字格式化
 -  除錯點 1 \
    同步非同步所造成的空陣列 filter \
    用 `Promise.then()` `async` `await` 可以實現等待的需求
 -  除錯點 2 \
-   
+  在 Promise 同時有 `onreject` 及 `.catch` 的情況下，因為 error 已經在 `.then()` 被 `onreject` 接住處理，後面的 `.catch` 不會再接到 error 訊息
+-  除錯點 3 \
+  在處理 Promise 的 error 時，如果直接在 `.then()` 中下 `console.error(error.message)` 會繼續執行之後的 `.then()`，如果不想要繼續執行後面的 `.then()` 在  `.then()` 用 `return Promise.reject(e);`；或是直接使用 `.catch()`，當任一 `.then()` 出錯時會直接跳到最後的 `.catch()`去執行
 
 #### 補充
 
--  
+-  Promise 用來解決 callback hell，優化非同步的語法，IE 不支援 \
+   執行順序會是將所有 code 執行完後才處理非同步事件 \
+   async/await 基於 Promise 讓非同步的語法結構類似於同步，更易讀好管理
+-  Promise 本身是一個建構函式，函式也是物件的一種，因此可以附加其它屬性方法在上， Promise 可以直接使用 all、race、resolve、reject 的方法 \
+-  Promise 建構函式 new 出的物件，則可以使用其中的原型方法（在 prototype 內），其中就包含 then、catch、finally，這些方法則必須在新產生的物件下才能呼叫。
+
+   ```javascript
+   const p = new Promise();
+
+   p.then();    // Promise 回傳正確
+   p.catch();   // Promise 回傳失敗
+   p.finally(); // 非同步執行完畢（無論是否正確完成）
+   ```
+
+-  Promise 建構函式建立同時，必須傳入一個函式作為參數（executor function），此函式的參數包含 resolve, reject，這兩個方法分別代表成功與失敗的回傳結果，僅能回傳其中之一，回傳後表示此 Promise 事件結束。
+
+   ```javascript
+   new Promise(function(resolve, reject) {
+      resolve(); // 正確完成的回傳方法
+      reject();  // 失敗的回傳方法
+   });
+   ```
+
 #### 參考資料
 
 -  [我要學會 JS(三)：callback、Promise 和 async/await 那些事兒](https://noob.tw/js-async/)
 -  [簡單理解 JavaScript Async 和 Await](https://www.oxxostudio.tw/articles/201908/js-async-await.html)
+-  [從Promise開始的JavaScript異步生活](https://eyesofkids.gitbooks.io/javascript-start-es6-promise/content/contents/ch5_flow_n_error.html)
+-  [JavaScript Promise 全介紹](https://wcc723.github.io/development/2020/02/16/all-new-promise/)
+-  [MDN - Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
