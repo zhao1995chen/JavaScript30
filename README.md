@@ -404,13 +404,64 @@ Array 的案例介紹
 
 #### Note
 
+-  ES6 Spread/Rest Operator 運算子 \
+   ES6 引入了新的運算子 (operator) ... (三個點號) 來表示展開或其餘運算子
+   -  Spread Operator 展開運算子
+
+      ```javascript
+      var ary1 = [4, 5, 6];
+      var ary2 = [1, 2, 3];
+
+      // ary1 會變成 [1, 2, 3, 4, 5, 6]
+      ary1 = [...ary2, ...ary1];
+      ```
+
+      Spread Operator 可以用在執行函數時的參數列上，它可以將一個陣列 (array) 展開，轉為多個逗點隔開的獨立參數
+   -  Rest Operator 其餘運算子
+
+      ```javascript
+      function fun1(...myArgs) {
+      console.log(myArgs);
+      }
+
+      // 顯示 []
+      fun1();
+
+      // 顯示 [1]
+      fun1(1);
+
+      // 顯示 [5, 6, 7]
+      fun1(5, 6, 7);
+      ```
+
+      可以更直觀的宣告不定長度參數 \
+      `...args` 只能放在最後一個參數，用來獲取其餘的參數，args 的值是一個陣列 (array)，用來存放獲取的參數。
+-  關鍵字 highlight 的部分是用 `replace()` 搭配正則去處理
 -  利用 `Intl.NumberFormat.format()` 對人口數做數字格式化
+-  正則表達式
+
+   ```javascript
+   const regex = new RegExp(pattern, flag);
+   ```
+
+   -  pattern 搜尋的關鍵字或規則 (詳見 [MDN](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Regular_Expressions))
+   -  flag
+      -  `g` 全域比對
+      -  `i` 忽略大小寫
+      -  `s` 單行模式
+      -  `m` 多行模式
+-  toLocaleString() 可以直接對數字做字串轉換，
 -  除錯點 1 \
+   cities 的型態，如果是用 `const` 之後塞東西進去要用 `push` \
+   如果只是單純的 `cities.push(data)` 會發現他是把取回的 data array 直接丟進 cities \
+   用 `cities.push(...data)` 才是將 data 展開轉為多個逗號隔開的參數，也才會是將 array 直接給了新的 array \
+   `...data` > Spread Operator 展開運算子
+-  除錯點 2 \
    同步非同步所造成的空陣列 filter \
    用 `Promise.then()` `async` `await` 可以實現等待的需求
--  除錯點 2 \
-  在 Promise 同時有 `onreject` 及 `.catch` 的情況下，因為 error 已經在 `.then()` 被 `onreject` 接住處理，後面的 `.catch` 不會再接到 error 訊息
 -  除錯點 3 \
+  在 Promise 同時有 `onreject` 及 `.catch` 的情況下，因為 error 已經在 `.then()` 被 `onreject` 接住處理，後面的 `.catch` 不會再接到 error 訊息
+-  除錯點 4 \
   在處理 Promise 的 error 時，如果直接在 `.then()` 中下 `console.error(error.message)` 會繼續執行之後的 `.then()`，如果不想要繼續執行後面的 `.then()` 在  `.then()` 用 `return Promise.reject(e);`；或是直接使用 `.catch()`，當任一 `.then()` 出錯時會直接跳到最後的 `.catch()`去執行
 
 #### 補充
@@ -439,9 +490,11 @@ Array 的案例介紹
    ```
 
 #### 參考資料
-
+-  [JavaScript ES6 Spread/Rest Operator 運算子](https://www.fooish.com/javascript/ES6/spread-rest-operator.html)
+-  [MDN = 正規表達式](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Regular_Expressions)
+-  [[JavaScript] 來寫正規表達式 Regex](https://medium.com/itsems-frontend/whats-regex-dc08c8c30a87)
+-  [MDN - Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
 -  [我要學會 JS(三)：callback、Promise 和 async/await 那些事兒](https://noob.tw/js-async/)
 -  [簡單理解 JavaScript Async 和 Await](https://www.oxxostudio.tw/articles/201908/js-async-await.html)
 -  [從Promise開始的JavaScript異步生活](https://eyesofkids.gitbooks.io/javascript-start-es6-promise/content/contents/ch5_flow_n_error.html)
 -  [JavaScript Promise 全介紹](https://wcc723.github.io/development/2020/02/16/all-new-promise/)
--  [MDN - Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
