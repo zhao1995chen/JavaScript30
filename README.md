@@ -490,6 +490,7 @@ Array 的案例介紹
    ```
 
 #### 參考資料
+
 -  [JavaScript ES6 Spread/Rest Operator 運算子](https://www.fooish.com/javascript/ES6/spread-rest-operator.html)
 -  [MDN = 正規表達式](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Regular_Expressions)
 -  [[JavaScript] 來寫正規表達式 Regex](https://medium.com/itsems-frontend/whats-regex-dc08c8c30a87)
@@ -498,3 +499,20 @@ Array 的案例介紹
 -  [簡單理解 JavaScript Async 和 Await](https://www.oxxostudio.tw/articles/201908/js-async-await.html)
 -  [從Promise開始的JavaScript異步生活](https://eyesofkids.gitbooks.io/javascript-start-es6-promise/content/contents/ch5_flow_n_error.html)
 -  [JavaScript Promise 全介紹](https://wcc723.github.io/development/2020/02/16/all-new-promise/)
+
+### Array Cardio Day 2
+
+Array 的案例介紹
+
+#### Note
+
+-  `Array.prototype.some()` 透過給定函式測試陣列中是否至少有一個元素
+-  `Array.prototype.every()` 透過給定函式測試陣列中的所有元素是否都符合給定的條件
+-  `Array.prototype.splice(start[, deleteCount[, item1[, item2[, ...]]]])` \
+   可以藉由刪除既有元素並／或加入新元素來改變一個陣列的內容 \
+   若 `deleteCount` 為 0 或是負數，則不會有元素被刪除 \
+   回傳值是一個包含被刪除的元素陣列，若沒有元素被刪除，則會回傳空陣列
+
+#### 參考資料
+
+-  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
