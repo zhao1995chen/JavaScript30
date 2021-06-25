@@ -39,5 +39,18 @@
   console.log('Find the comment with this ID.', findIndex);
 
   // delete the comment with the ID of 823423
-  console.table(comments.splice(findIndex, 1));
+  // splice()
+  // console.table(comments.splice(findIndex, 1));
+  // console.table(comments);
+
+  // slice()
+  const newComments = [
+    ...comments.slice(0, findIndex),
+    ...comments.slice(findIndex + 1),
+  ];
+  console.table(newComments);
+
+  newComments[2].text = '123';
+  console.table(comments);
+  console.table(newComments);
 })();

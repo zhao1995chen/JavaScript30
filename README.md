@@ -508,11 +508,75 @@ Array 的案例介紹
 
 -  `Array.prototype.some()` 透過給定函式測試陣列中是否至少有一個元素
 -  `Array.prototype.every()` 透過給定函式測試陣列中的所有元素是否都符合給定的條件
+-  `Array.prototype.find()` 會回傳第一個滿足所提供之測試函式的元素值
 -  `Array.prototype.splice(start[, deleteCount[, item1[, item2[, ...]]]])` \
    可以藉由刪除既有元素並／或加入新元素來改變一個陣列的內容 \
    若 `deleteCount` 為 0 或是負數，則不會有元素被刪除 \
    回傳值是一個包含被刪除的元素陣列，若沒有元素被刪除，則會回傳空陣列
 
+#### 補充
+
+-  `splice()` vs `slice()`
+   前者直接動原始資料，後者對陣列做淺拷貝(shallow copy)，原本的陣列不會被修改
+-  淺拷貝址對第一層有效，所以當對新陣列中物件去做更改，因為物件裡的內容已經不是第一層，物件是同一個，所以也會改到原本陣列中物件的值，是需要注意的雷點
+
+   ```javascript
+   const newComments = [
+      ...comments.slice(0, findIndex),
+      ...comments.slice(findIndex + 1),
+   ];
+
+   newComments[2].text = '123';
+   console.table(comments); // comments[2].text = '123'
+   console.table(newComments); // newComments[2].text = '123'
+   ```
+-  Shallow Copy vs Deep Copy
+   -  淺拷貝 (Shallow Copy)：只能達到淺層的複製(第一層)，若有第二層以上的資料的話，就無法達到實際的複製，而是會與舊物件一起共用同一塊記憶體 \
+      -  `Object.assign({}, origin)`
+
+         ```javascript
+         let studentA = {
+            name: {
+               first: 'Emma',
+               last: 'Wang'
+            },
+            sex: 'Female'
+         };
+         let studentB = Object.assign({}, studentA);
+         studentB.name.first = 'Max';
+         studentB.sex = 'Male';
+         console.log(studentA);
+         // studentA.name.first = 'Max', studentA.name.last = 'Wang', studentA.sex = 'Female'
+         console.log(studentB);
+         // studentB.name.first = 'Max', studentB.name.last = 'Wang', studentB.sex = 'Male'
+         ```
+
+      -  展開運算子(Spread Operator) `{...data}`
+   -  深拷貝 (Deep Copy)：會另外創造一個一模一樣的物件，新物件跟原物件不共用記憶體，修改新物件不會改到原物件
+      -  `JSON.parse(JSON.stringify(object))` \
+         但也不能說是真的 deep copy，如果 object 裡面有 function 就會 GG，但以單純的資料複製來說可行
+
+         ```javascript
+         let studentA = {
+            name: {
+               first: 'Emma',
+               last: 'Wang'
+            },
+            sex: 'Female',
+            getSex: function() { console.log(this.sex); }
+         };
+         let studentB = JSON.parse(JSON.stringify(studentA));
+         studentB.name.first = 'Max';
+         studentB.sex = 'Male';
+         console.log(studentA);
+         // studentA.name.first = 'Emma', studentA.name.last = 'Wang', studentA.sex = 'Female', studentA.getSex = function() { console.log(this.sex); }
+         console.log(studentB);
+         // studentB.name.first = 'Max', studentB.name.last = 'Wang', studentB.sex = 'Male'
+         ```
+
+-  在物件中使用箭頭函式去定義方法，所綁定的 `this` 是 `window` 不是物件本身
 #### 參考資料
 
 -  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
+-  [JS-淺拷貝(Shallow Copy) VS 深拷貝(Deep Copy)](https://kanboo.github.io/2018/01/27/JS-ShallowCopy-DeepCopy/)
+-  [JavaScript 淺拷貝 (Shallow Copy) 與深拷貝 (Deep Copy)](https://awdr74100.github.io/2019-10-24-javascript-deepcopy/)
