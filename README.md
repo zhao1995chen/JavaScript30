@@ -656,3 +656,27 @@ Follow up
 - [學習 canvas 日記系列](https://ithelp.ithome.com.tw/articles/10202356?sc=iThelpR)
 -  [Mouse Event 小筆記](https://medium.com/@shizukuichi/mouse-event-%E5%B0%8F%E7%AD%86%E8%A8%98-feb5dd866b0)
 -  https://blog.csdn.net/vuturn/article/details/47807899
+
+### 14 Must Know Dev Tools Tricks
+
+#### Note
+
+-  Chrome Debugger 加中斷點 > break on attribute modifications
+
+#### 補充
+
+-  把 console 包成一個 object，可以直接用 flag 去控制開關
+
+   ```javascript
+   let console = {
+      isDev: true,
+      log(...args) {
+         if (!this.isDev) return;
+         window.console.log(...args);
+      }
+   };
+   ```
+
+-  有封裝速度差三倍 !!?
+-  Alex 云：當 array 塞值型態不固定時，在遍歷會慢很多倍 \
+   今天進行實作，分別在 insert 跟 forEach 下 test，遍歷的時間 3 個 array 都差不多，反倒 insert 是 array1 最快，array2 跟 array3 差不多，10^6 約是 array1 的 4 倍，10^7 約是 array1 的 2 倍，但不穩定，有時候可能會花更多時間
