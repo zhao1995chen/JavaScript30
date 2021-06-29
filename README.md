@@ -580,3 +580,79 @@ Array 的案例介紹
 -  [MDN - Array](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array)
 -  [JS-淺拷貝(Shallow Copy) VS 深拷貝(Deep Copy)](https://kanboo.github.io/2018/01/27/JS-ShallowCopy-DeepCopy/)
 -  [JavaScript 淺拷貝 (Shallow Copy) 與深拷貝 (Deep Copy)](https://awdr74100.github.io/2019-10-24-javascript-deepcopy/)
+
+### Fun with HTML5 Canvas
+
+利用 Canvas 在網頁上畫畫
+
+#### Note
+-  canvas 是利用 `HTMLCanvasElement..getContext()` 在 context 上做編輯
+   -  `2d` 建立的是 `CanvasRenderingContext2D`
+   -  `webgl` 或 `experimental-webgl` 建立的是 `WebGLRenderingContext` 三维渲染
+   -  `webgl2` 或 `experimental-webgl2` 建立的是 `WebGL2RenderingContext` 三维渲染
+   -  `bitmaprenderer` 創造出一個 `ImageBitmapRenderingContext` 進行已給定的 `ImageBitmap` 替換
+-  樣式設定
+   -  `lineWidth` 預設是 1
+   -  `lineCap` 端點樣式
+
+      ```javascript
+      ctx.lineCap = "butt"; // 預設
+      ctx.lineCap = "round"; // 圓邊
+      ctx.lineCap = "square"; // 長度與圓邊一樣
+      ```
+
+   -  `lineJoin` 轉角樣式
+
+      ```javascript
+      ctx.lineJoin = "miter"; // 預設
+      ctx.lineJoin = "round";
+      ctx.lineJoin = "bevel"; // 斜切角
+      ```
+
+   -  `setLineDash` 虛線，虛線的參數會重複數值產生 [實線、間隔、實線、間隔、實線 ......] 效果
+
+      ```javascript
+      ctx.setLineDash([20]); // 實線、間隔都是 20 -> [20,20,20,20, ...]
+      ctx.setLineDash([1,10]);  // 實線 1、間隔 10 ->  [1,10,1,10, ...]
+      ```
+
+   -  `strokeStyle` 線條的顏色樣式
+-  常用方法
+   -  `beginPath()` 建立一個線段，如果需要畫線段必須要建立一個新線段
+   -  `closePath()` 線段的結尾，不是必須
+   -  `moveTo(x, y)` 畫直線的起始點
+   -  `lineTo(x, y)` 畫直線的終點
+   -  `arc(x, y, radius, startAngle, endAngle, anticlockwise)` 畫弧線 \
+      `arc()` 用的是弧度(radians)而非角度(degrees)
+   -  `fill(startX, startY, width, height)` 填滿圖形內容
+   -  `stroke(startX, startY, width, height)` 畫邊線
+   -  `clear(startX, startY, width, height)` 清除指定矩形區域內的內容，使其變為全透明
+-  滑鼠監聽事件
+   -  `mousedown`
+   -  `mousemove`
+   -  `mouseup`
+   -  `mouseout` 當監聽事件的 HTML 元件還有子元件，所有的子元件也會觸發監聽事件
+   -  `mouseleave` 只有離開指定 HTML 元件的時候才會被觸發
+   -  `mouseenter`
+-  `hsl()` 利用角度去作出色彩變化
+#### 補充
+
+新增的功能
+
+-  滑鼠按著移出視窗畫面，回來後能從回來的點開始繼續畫，不會產生邊際連線
+   -  BUG 移出前有 mousedown，在非 window 的區域放開，移入後還是會保持著 mousedown 的狀態
+-  canvas 隨著視窗大小變化調整大小，並且保留原本畫的東西
+   - BUG Canvas 取視窗大小，但 `<html> <body>` 會超出視窗大小
+
+Follow up
+
+-  回上一步 `getImageData()` 先把畫的存成圖片，再移除
+-  橡皮擦 用底色覆蓋
+
+#### 參考資料
+
+-  [MDN - CanvasRenderingContext2D](https://developer.mozilla.org/zh-TW/docs/Web/API/CanvasRenderingContext2D)
+-  [MDN - 繪製圖形](https://developer.mozilla.org/zh-TW/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes)
+- [學習 canvas 日記系列](https://ithelp.ithome.com.tw/articles/10202356?sc=iThelpR)
+-  [Mouse Event 小筆記](https://medium.com/@shizukuichi/mouse-event-%E5%B0%8F%E7%AD%86%E8%A8%98-feb5dd866b0)
+-  https://blog.csdn.net/vuturn/article/details/47807899
