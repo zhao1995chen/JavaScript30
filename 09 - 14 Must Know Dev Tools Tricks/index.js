@@ -27,27 +27,35 @@
       window.console.assert(condition, ...args);
     },
     dir(...args) {
+      if (!this.isDev) return;
       window.console.dir(...args);
     },
     clear() {
+      if (!this.isDev) return;
       window.console.clear();
     },
     table(...args) {
+      if (!this.isDev) return;
       window.console.table(...args);
     },
     group(...args) {
+      if (!this.isDev) return;
       window.console.group(...args);
     },
     groupEnd(...args) {
+      if (!this.isDev) return;
       window.console.groupEnd(...args);
     },
     count(label) {
+      if (!this.isDev) return;
       window.console.count(label);
     },
     time(label) {
+      if (!this.isDev) return;
       window.console.time(label);
     },
     timeEnd(label) {
+      if (!this.isDev) return;
       window.console.timeEnd(label);
     },
   };
