@@ -680,3 +680,24 @@ Follow up
 -  有封裝速度差三倍 !!?
 -  Alex 云：當 array 塞值型態不固定時，在遍歷會慢很多倍 \
    今天進行實作，分別在 insert 跟 forEach 下 test，遍歷的時間 3 個 array 都差不多，反倒 insert 是 array1 最快，array2 跟 array3 差不多，10^6 約是 array1 的 4 倍，10^7 約是 array1 的 2 倍，但不穩定，有時候可能會花更多時間
+
+### Hold Shift and Check Checkboxes
+
+Shift 選取
+
+#### Note
+
+-  MouseEvent 有 shiftKey 跟 ctrlKey 的布林屬性可以直接判斷不用額外監聽 Shift 的 KeyDownEvent
+-  nextSibling vs nextElementSibling \
+   `Node.nextSibling` 取得的是元素的兄弟節點，包含文字、註解、空白 \
+   `Element.nextElementSibling` 取得元素的兄弟元素節點 \
+   如果用 `nextSibling` 有機會取到的跟想像的不一樣，用 `nextElementSibling` 取到的就是下個 element 可以避掉這個雷點
+
+#### 補充
+
+-  把 console 包成一個 object，可以直接用 flag 去控制開關
+
+#### 參考文件
+
+-  [nextSibling 和nextElementSibling的區別](https://www.itread01.com/content/1549350006.html)
+-  [JavaScript DOM node.nextSibling 與 element.nextElementSibling 差別](https://matthung0807.blogspot.com/2021/03/javascript-dom-nextsibling-nextelementsibling-diff.html)
