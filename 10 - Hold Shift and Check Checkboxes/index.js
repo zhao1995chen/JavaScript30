@@ -15,32 +15,26 @@
     },
   };
 
-  const items = document.querySelectorAll('.item input[type="checkbox"]');
-  const itemTitles = [];
-  items.forEach((item) =>
-    itemTitles.push({text: item.nextElementSibling.innerHTML})
+  const items = Array.from(
+    document.querySelectorAll('.item input[type="checkbox"]')
   );
-  console.log('items', items);
-  console.log('itemTitles', itemTitles);
 
-  let startIndex;
-  let endIndex;
+  console.log('items', items);
+
+  let startIndex = null;
+  let endIndex = null;
 
   function inputClickHandler(e) {
     console.dir(e);
     console.log(items);
 
     if (e.shiftKey) {
-      endIndex = itemTitles.findIndex(
-        (itemTitle) => e.target.nextElementSibling.innerHTML === itemTitle.text
-      );
+      endIndex = items.indexOf(this);
       console.log('endIndex', endIndex);
       selectAll();
       startIndex = endIndex;
     } else {
-      startIndex = itemTitles.findIndex(
-        (itemTitle) => e.target.nextElementSibling.innerHTML === itemTitle.text
-      );
+      startIndex = items.indexOf(this);
       console.log('startIndex', startIndex);
     }
   }
@@ -66,10 +60,13 @@
 
     console.log(check);
 
-    [startIndex, endIndex] =
-      startIndex > endIndex ? [endIndex, startIndex] : [startIndex, endIndex];
+    // [startIndex, endIndex] =
+    //   startIndex > endIndex ? [endIndex, startIndex] : [startIndex, endIndex];
 
-    let array = Array.from(items).slice(startIndex, endIndex + 1);
+    let array = Array.from(items).slice(
+      Math.min(startIndex, endIndex),
+      Math.max(startIndex, endIndex) + 1
+    );
 
     console.log('new array', array);
 

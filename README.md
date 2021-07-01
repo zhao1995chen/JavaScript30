@@ -692,12 +692,26 @@ Shift 選取
    `Node.nextSibling` 取得的是元素的兄弟節點，包含文字、註解、空白 \
    `Element.nextElementSibling` 取得元素的兄弟元素節點 \
    如果用 `nextSibling` 有機會取到的跟想像的不一樣，用 `nextElementSibling` 取到的就是下個 element 可以避掉這個雷點
+-  fineIndex vs indexOf \
+   `Array.prototype.findIndex(callbackFn = (element[, index[, array]]) {}[, thisArg])` 括號裡面放的是 function，如果找不到會回傳 -1 \
+   `Array.prototype.indexOf(searchElement[, fromIndex])` 括號裡面放的是尋找的值，如果找不到會回傳 -1
+-  findIndex vs find \
+   `Array.prototype.find(callbackFn = (element[, index[, array]]) {}[, thisArg])` 回傳的是符合條件的 element
+-  在監聽事件用 `this` 會直接抓 element，不需要額外抓值判斷就可以用 `Array.indexOf(this)` 抓位置
 
 #### 補充
 
 -  把 console 包成一個 object，可以直接用 flag 去控制開關
 
+新增的功能
+
+-  取消勾選的反向選取
+
 #### 參考文件
 
 -  [nextSibling 和nextElementSibling的區別](https://www.itread01.com/content/1549350006.html)
 -  [JavaScript DOM node.nextSibling 與 element.nextElementSibling 差別](https://matthung0807.blogspot.com/2021/03/javascript-dom-nextsibling-nextelementsibling-diff.html)
+-  [Difference Between indexOf and findIndex function of array](https://stackoverflow.com/questions/41443029/difference-between-indexof-and-findindex-function-of-array)
+-  [MDN - findIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+-  [MDN - indexOf](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
+-  [MDN - find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
