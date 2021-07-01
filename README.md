@@ -57,7 +57,7 @@ JS30 是來自一個加拿大工程師所提供的線上免費學習資源，30 
 -  `Array.from()` \
    會從類陣列（array-like）或是可迭代（iterable）物件建立一個新的 Array 實體。 \
    NodeList 不是 Array
--  target vs currentTarget
+-  target vs currentTarget \
    target 抓到的是觸發事件的物件，currentTarget 抓的是繫結的物件
 
 #### 參考資料
@@ -715,3 +715,59 @@ Shift 選取
 -  [MDN - findIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
 -  [MDN - indexOf](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 -  [MDN - find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+
+### Custom Video Player
+
+#### Note
+
+-  HTMLVideoElement 繼承 HTMLMediaElement 的屬性跟方法
+   -  `duration` 總時長
+   -  `startTime` 開始播放的時間
+   -  `currentTime` 目前的播放時間
+   -  `volume` 聲音大小
+   -  `muted` 是否靜音
+   -  `paused` 是否被暫停，只能讀取
+   -  `played` 是否播放，只能讀取
+   -  `playbackRate` 播放的速度
+   -  `play()` 開始播放
+   -  `pause()` 暫停播放
+   -  `load()` 重新載入
+-  innerText vs textContent vs innerHTML vs outerHTML \
+   `innerText` 取得的是被渲染過後的文字 \
+   `textContent` 取得的是呈現在 HTML 原始碼內的換行、空格和文字，`<br>` 會忽略 \
+   `innerHTML` 取得的是 Element 內部的元件 \
+   `outerHTML` 取得的是 Element 包含本身的所有元件 \
+   在 `document.createTextNode();` 後，只有 textContent 是唯一可用方法
+
+   ```javascript
+   var text = document.createTextNode('text');
+
+   console.log(text.innerText);    //  undefined
+   console.log(text.innerHTML);    //  undefined
+   console.log(text.textContent);  //  text
+   console.log(text.outerHTML);    //  undefined
+   ```
+
+-  除錯點 1 \
+   `currentTime` 超過總長度或負數要進行調整
+-  除錯點 2 \
+   `flex-basis` 的優先度高於 `width`，直接把 CSS Variable 給 `width` 的話因為優先層級的關係，會吃不到想要出現的效果
+-  除錯點 3 \
+   箭頭函式的 `this` 不是 element
+-  除錯點 4 \
+   `typeof operand` 的回傳是一個字串
+
+#### 補充
+
+-  
+
+新增功能
+
+-  用左右鍵控制快進快退
+-  在 player 外也能做到進度條的調整
+   -  BUG 吃到的 offsetX 不對
+
+#### 參考文件
+
+-  [MDN - HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)
+-  [innerText、innerHTML、textContent、outerHTML 的差別](https://orandigo.github.io/blog/2020/03/22/20200322-innerText-innerHTML-textContent-outerHTML/)
