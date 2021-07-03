@@ -806,6 +806,7 @@ Shift 選取
 ### Key Sequence Detection
 
 #### Note
+
 -  `Array.prototype.splice(start[, deleteCount[, item1[, item2[, ...]]]])` 從 start 開始刪除 deleteCount 個元素
 -  `String.prototype.includes(searchString[, position])` 判斷字串是否包含尋找的字串，回傳布林值
 
@@ -817,3 +818,23 @@ Shift 選取
 
 -  [MDN - splice()](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 -  [MDN - includes()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes)
+
+### Slide in on Scroll
+
+圖片隨著畫面滾動飛進飛出
+
+#### Note
+
+-  `Window.scrollY` 取得滾動事件被觸發後，垂直方向以滾動的像素值
+-  `Window.innerHeight` 瀏覽器的窗口高度，如果有 scrollbar 包含 scrollbar 的高度
+-  height vs innerHeight vs outerHeight \
+   `height` 元素本身的高度，不包含 `padding`、`border`、`margin` \
+   `innerHeight` 元素本身的高度加上 `padding` 高度 \
+   `outerHeight` 包含所有數值，元素本身的高度再加上 `padding`、`border`、`margin` 的高度
+-  scrollX/scrollY vs scrollLeft/scrollTop \
+   前者是 Window 的屬性，後者是用在 Element 上，混用的話會報 `undefined`
+
+#### 參考文件
+
+-  [关于html中的height、innerHeight、outerHeight区别](https://blog.csdn.net/hlj184/article/details/51141779)
+-  [scrollY和scrollTop的区别](https://old.lmonkey.com/ask/3760)
