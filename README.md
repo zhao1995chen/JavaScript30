@@ -802,3 +802,18 @@ Shift 選取
 -  [MDN - HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
 -  [[教學] 一次搞懂 clientHeight/clientWidth/offSetHeight/offsetWidth/scrollHeight/scrollWidth/scrollTop/scrollLeft 的區別](https://shubo.io/element-size-scrolling/)
 -  [innerText、innerHTML、textContent、outerHTML 的差別](https://orandigo.github.io/blog/2020/03/22/20200322-innerText-innerHTML-textContent-outerHTML/)
+
+### Key Sequence Detection
+
+#### Note
+-  `Array.prototype.splice(start[, deleteCount[, item1[, item2[, ...]]]])` 從 start 開始刪除 deleteCount 個元素
+-  `String.prototype.includes(searchString[, position])` 判斷字串是否包含尋找的字串，回傳布林值
+
+#### 補充
+
+-  `String.prototype.indexOf(searchValue[, fromIndex])` 判斷字串是否包含尋找的字串，會回傳第一個找到的位置，如果沒找到會回傳 -1
+
+#### 參考文件
+
+-  [MDN - splice()](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
+-  [MDN - includes()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes)
