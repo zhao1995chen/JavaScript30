@@ -21,7 +21,7 @@
   const minus = document.querySelector('.minus');
   const plus = document.querySelector('.plus');
   const progress = document.querySelector('.progress');
-  const inputs = document.querySelectorAll('input');
+  const ranges = document.querySelectorAll('.ranges');
 
   // handlers
   const keyHandler = (e) => {
@@ -45,13 +45,13 @@
     console.dir(e);
     console.dir(viewer);
 
-    if (viewer.paused) viewer.play();
-    else viewer.pause();
+    // if (viewer.paused) viewer.play();
+    // else viewer.pause();
 
-    iconChange(viewer.paused);
+    viewer[viewer.paused ? 'play' : 'pause']();
   };
 
-  const iconChange = (flag) => {
+  const iconChange = () => {
     console.table([
       ['innerHTML', toggle.innerHTML],
       ['outerHTML', toggle.outerHTML],
@@ -59,16 +59,16 @@
       ['textContent', toggle.textContent],
     ]);
 
-    toggle.innerHTML = flag ? '►' : '❚ ❚';
+    toggle.innerHTML = viewer.paused ? '►' : '❚ ❚';
   };
 
-  const skipHandler = (e) => {
+  function skipHandler(e) {
     console.dir(e.currentTarget);
     console.log(typeof e);
 
-    if (typeof e === 'object')
-      viewer.currentTime += parseInt(e.currentTarget.dataset.skip);
-    else viewer.currentTime += e;
+    // 對觸發click事件呼叫及keydown事件呼叫進行不同的取值處理
+    viewer.currentTime +=
+      typeof e === 'object' ? parseFloat(this.dataset.skip) : e;
 
     viewer.currentTime =
       viewer.currentTime < 0
@@ -76,7 +76,7 @@
         : viewer.currentTime > viewer.duration
         ? viewer.duration
         : viewer.currentTime;
-  };
+  }
 
   const scrollbarHandler = () => {
     console.table({currentTime: viewer.currentTime, duration: viewer.duration});
@@ -92,41 +92,36 @@
     viewer[this.name] = this.value;
   }
 
-  setInterval(scrollbarHandler, 50);
-
   let isDown = false;
 
   const progressHandler = (e) => {
     console.dir(e);
     console.table([e.offsetX, progress.clientWidth]);
 
-    if (e.type === 'click' || (e.type === 'mousemove' && isDown))
-      moveHandler(e);
-  };
-
-  const moveHandler = (e) => {
-    const percentage = e.offsetX / progress.clientWidth;
-
-    document.documentElement.style.setProperty(
-      '--progress',
-      percentage * 100 + '%'
-    );
-    viewer.currentTime = viewer.duration * percentage;
+    viewer.currentTime = (viewer.duration * e.offsetX) / progress.clientWidth;
   };
 
   // eventListeners
   window.addEventListener('keydown', keyHandler);
+
   viewer.addEventListener('click', playHandler);
+  viewer.addEventListener('timeupdate', scrollbarHandler);
+  viewer.addEventListener('play', iconChange);
+  viewer.addEventListener('pause', iconChange);
+
   toggle.addEventListener('click', playHandler);
   minus.addEventListener('click', skipHandler);
   plus.addEventListener('click', skipHandler);
 
-  inputs.forEach((input) =>
-    input.addEventListener('mousemove', valueChangeHandler)
+  ranges.forEach((range) =>
+    range.addEventListener('click', valueChangeHandler)
+  );
+  ranges.forEach((range) =>
+    range.addEventListener('mousemove', valueChangeHandler)
   );
 
   progress.addEventListener('click', progressHandler);
   progress.addEventListener('mousedown', () => (isDown = true));
-  progress.addEventListener('mousemove', progressHandler);
+  progress.addEventListener('mousemove', (e) => isDown && progressHandler(e));
   progress.addEventListener('mouseup', () => (isDown = false));
 })();

@@ -732,6 +732,21 @@ Shift 選取
    -  `play()` 開始播放
    -  `pause()` 暫停播放
    -  `load()` 重新載入
+-  MouseEvent 屬性
+   -  `screenX` `screenY` 觸發點與螢幕左上角的距離，不會隨著畫面滾動改變
+   -  `offsetX` `offsetY` 觸發點在監聽的元素內距
+   -  `clientX` `clientY` 觸發點與可視範圍左上角的距離，不會隨著畫面滾動改變
+   -  `pageX` `pageY` 觸發點與完整文檔左上角的距離，會隨著畫面滾動改變 \
+   在沒有捲軸的情況下，這個值就等於 `clientX` / `clientY`
+   -  `movementX` `movementY` 距離上一個事件監聽的相對位移，如果有卷軸也包含在範圍內
+-  HTMLElement 屬性
+   -  `offsetWidth` `offsetHeight` 元素本身的寬度/高度，包含邊界、捲軸及 `padding`
+   -  `clientWidth` `clientHeight` 元素所包含的子元素的寬度/高度，包含 `padding`，但不包含邊界及捲軸
+   -  `scrollWidth` `scrollHeight` 元素所包含的子元素的完整寬度/高度，包含超出捲軸之外部分的寬度/高度 \
+   在沒有捲軸的情況下，這個值就等於 `clientWidth` / `clientHeight`
+   -  `offsetLeft` `offsetTop` 元素本身相對於父元素的水平/垂直距離
+   -  `clientLeft` `clientTop` 元素本身內外的水平/垂直距離，也就是邊界寬度
+   -  `scrollLeft` `scrollTop` 被捲動的距離
 -  innerText vs textContent vs innerHTML vs outerHTML \
    `innerText` 取得的是被渲染過後的文字 \
    `textContent` 取得的是呈現在 HTML 原始碼內的換行、空格和文字，`<br>` 會忽略 \
@@ -748,6 +763,19 @@ Shift 選取
    console.log(text.outerHTML);    //  undefined
    ```
 
+-  video 的 `controls` 屬性可以做到基本的影片功能操作 \
+   收工下班XD
+-  將一個 function 放在一個 function 中做連續呼叫會產生耦合，應該要用另外的事件監聽去觸發
+-  利用 `&&` `||` 不用 `if-else` 做判斷並執行
+
+   ```javascript
+   // 當 isDown 等於 true 才會執行 progressHandler(e)
+   progress.addEventListener('mousemove', (e) => isDown && progressHandler(e));
+
+   // 當 isDown 等於 false 才會執行 progressHandler(e)
+   progress.addEventListener('mousemove', (e) => isDown || progressHandler(e));
+   ```
+
 -  除錯點 1 \
    `currentTime` 超過總長度或負數要進行調整
 -  除錯點 2 \
@@ -759,10 +787,9 @@ Shift 選取
 
 #### 補充
 
--  
-
 新增功能
 
+-  用空白鍵 及 Enter 鍵控制播放
 -  用左右鍵控制快進快退
 -  在 player 外也能做到進度條的調整
    -  BUG 吃到的 offsetX 不對
@@ -770,4 +797,8 @@ Shift 選取
 #### 參考文件
 
 -  [MDN - HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement)
+-  [MDN - MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent)
+-  [網頁座標 - 了解 screen、page、client 差異](https://ithelp.ithome.com.tw/articles/10230441)
+-  [MDN - HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement)
+-  [[教學] 一次搞懂 clientHeight/clientWidth/offSetHeight/offsetWidth/scrollHeight/scrollWidth/scrollTop/scrollLeft 的區別](https://shubo.io/element-size-scrolling/)
 -  [innerText、innerHTML、textContent、outerHTML 的差別](https://orandigo.github.io/blog/2020/03/22/20200322-innerText-innerHTML-textContent-outerHTML/)
