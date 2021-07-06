@@ -833,8 +833,171 @@ Shift 選取
    `outerHeight` 包含所有數值，元素本身的高度再加上 `padding`、`border`、`margin` 的高度
 -  scrollX/scrollY vs scrollLeft/scrollTop \
    前者是 Window 的屬性，後者是用在 Element 上，混用的話會報 `undefined`
+-  debounce vs throttle \
+   當監聽事件短時間被大量觸發時，會消耗大量效能進行計算，造成頁面緩慢或是瀏覽器直接崩潰，像是 `mousemove`、`resize`、`autocomplete`，所以就有了 `debounce` 和 `throttle`
+
+   ```javascript
+   function debounce(func, wait = 20, immediate = true) {
+      let timer;
+      return function () {
+         let context = this;
+         let args = arguments;
+
+         clearTimeout(timer); // 如果已經有計時器在跑就把原本的清掉
+         timer = setTimeout(function () {
+         func.apply(context, args);
+         }, wait);
+         if (immediate) func.apply(context, args);
+         else clearTimeout(timer); // 如果已經立即執行就把 timer 清掉不重複執行
+      };
+   }
+   ```
+
+   目前做出的效果比較偏向 throttle，還找不到該怎麼修正，只好先放著 QQ
+
+-  閉包 closure
+   -  為了避免全域變數的汙染，只能使用 return 的屬性及方法，對內部變數及方法進行保護
+   -  閉包的記憶體是在呼叫時才產生，可以利用 IIFE 達到立即執行
+   -  JavaScript 的垃圾回收機制會釋放不再使用的記憶體，但閉包為了保留函式記得和存取其語彙範疇的能力，就會予以保留，不做記憶體回收，運用要注意對於記憶體空間的高使用
+
+   ```javascript
+   let count = (num) => {
+    let time = num;
+    return {
+      openToChange: num,
+      plus: function () {
+        console.log(++time);
+      },
+      get() {
+        console.log(time);
+      },
+    };
+   };
+
+   let test = count(5);
+   test.get(); // output: 5
+   test.plus(); // output: 6
+   console(count.time); // output: Uncaught ReferenceError: time is not defined at <anonymous>:1:1
+   ```
+
+   -  雷點
+
+      ```javascript
+      for (var i = 1; i <= 5; i++) {
+         setTimeout(function timer() {
+            console.log(i);
+         }, i * 1000);
+      }
+      ```
+
+      預期的輸出是 1 2 3 4 5 但卻輸出 6 6 6 6 6 \
+      原因在於使用 var 進行變數宣告不具備區域變數的特性，會被 hoisting 到全域成為一個全域變數，等到 `setTimeout()` 要執行 `console.log()` 時，`i` 已經跑完迴圈變成了 6，setTimeout 所 console 出來的值都是全域變數 i
+
+      -  解法一 使用立即函式，每次迭代都建立一個新的函示範疇
+
+      ```javascript
+      for (var i = 1; i <= 5; i++) {
+         (function(j) {
+            setTimeout(function timer() {
+               console.log(j);
+            }, j * 1000);
+         })(i);
+      }
+      ```
+
+      -  解法二 `let`
+
+      ```javascript
+      for (let i = 1; i <= 5; i++) {
+         setTimeout(function timer() {
+            console.log(i);
+         }, i * 1000);
+      }
+      ```
+
+-  call vs apply vs bind \
+   都是在對 function 的 `this` 進行指定，call 與 apply 的差別在於 `Function.prototype.call(thisArg[, arg1[, arg2[, ...]]])` 是將一連串的參數丟進去，`Function.prototype.apply()` 是丟一組 array-like 的參數，如果要使用陣列的功能依舊要用 `Array.from()` 進行轉型 \
+   `Function.prototype.bind(thisArg[, arg1[, arg2[, ...]]])` 所代入的參數會做為後續的參數預設，之後呼叫只要再傳入其餘的參數
+
+   ```javascript
+   function add(a, b) {
+      return a + b;
+   }
+
+   add.call(null, 1, 2);			// 3
+   add.call(null, 1, 4);			// 5
+   add.apply(null, [1, 2]);		// 3
+   add.apply(null, [1, 4]);			// 5
+   var add1 = add.bind(null, 1);
+   console.log(add1(2));			// 3
+   console.log(add1(4));			// 5
+   ```
+
+#### 補充
+
+-  lazy-loading 當網頁有很多圖片，為了增加讀取速度，會使用 lazy-loading 的方式來載入圖片，不在視線中的圖片就會等到使用者捲動捲軸時才會讀取 \
+   一般常用的可以用
+   -  第三方套件 lazysizes、Lozad.js
+   -  監聽 scroll、resize 和 orientationchange 事件
+   -  使用 Intersection Observer API
+
+   Chrome 76 之後變成原生支援，不用額外寫 JS 就可以達到 lazy-loading \
+   作法是在 `img` `iframe` 的標籤加上 loading="lazy"，Chrome 就會自動偵測是否在使用者視線內，如果不在就等到快到時再抓取圖片。
+
+   ```html
+   <img src="image.webp" loading="lazy" alt="…" width="200" height="200">
+   <iframe src="https://example.com" loading="lazy"></iframe>
+   ```
+
+-  scope
+   -  Javascript 的作用域鏈會從最內層一層一層往外找
+
+      ```javascript
+      function test() {
+         var a = 100
+         function inner() {
+            console.log(a) // 100
+         }
+         inner()
+      }
+      test()
+      ```
+      從 inner function scope -> test function scope -> global scope
+
+   -  在 JS 中的作用域是靜態作用域，靜態作用域是在 function 被宣告的時候就決定了，而不是 function 被執行的時候，所以當下看到的結構就是它的作用域
+
+      ```javascript
+      var a = 100
+      function echo() {
+         console.log(a) // 100
+      }
+
+      function test() {
+         var a = 200
+         echo()
+      }
+
+      test()
+      ```
+
+      echo 的 a 在一開始就被決定了是 global 的 a，就算後來 test 裡面有也會使用全域變數
+
+   -  但是 this 的值卻是動態的，在執行當下才被決定
 
 #### 參考文件
 
 -  [关于html中的height、innerHeight、outerHeight区别](https://blog.csdn.net/hlj184/article/details/51141779)
 -  [scrollY和scrollTop的区别](https://old.lmonkey.com/ask/3760)
+-  [[有趣面試題] 網頁效能問題改善之 Debounce & Throttle](https://ithelp.ithome.com.tw/articles/10222749)
+-  [实例解析防抖动（Debouncing）和节流阀（Throttling）](https://jinlong.github.io/2016/04/24/Debouncing-and-Throttling-Explained-Through-Examples/)
+-  [JavaScript 防抖 - Web前端工程师面试题讲解](https://www.youtube.com/watch?v=fk8VgtDagHM)
+-  [MDN - 閉包](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Closures)
+-  [你懂 JavaScript 嗎？#15 閉包（Closure）](https://cythilya.github.io/2018/10/22/closure/)
+-  [Closure 閉包](https://eyesofkids.gitbooks.io/javascript-start-from-es6/content/part4/closure.html)
+-  [所有的函式都是閉包：談 JS 中的作用域與 Closure](https://blog.techbridge.cc/2018/12/08/javascript-closure/)
+-  [MDN - apply](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
+-  [MDN - call](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
+-  [JavaScript - call，apply，bind](https://ithelp.ithome.com.tw/articles/10195896)
+-  [Chrome 瀏覽器原生 lazy-loading 功能](https://ianwu.tw/press/programming/web/loading_lazy.html#%E5%AF%A6%E4%BD%9C)
+-  [Day02 深入了解 Lazy-load 的背後實作 - Intersection Observer API](https://zh-tw.coderbridge.com/series/dd90bf7c9656467cb47636c37faf79f3/posts/9fca97bba1774fa29a9ae76473cfab36)
+-  [透過 lazy loading 延遲載入圖片](https://medium.com/@mingjunlu/lazy-loading-images-via-the-intersection-observer-api-72da50a884b7)
